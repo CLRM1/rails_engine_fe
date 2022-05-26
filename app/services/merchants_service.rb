@@ -1,3 +1,3 @@
-class MerchantsSercivce
-  
+class MerchantsService
+
 end

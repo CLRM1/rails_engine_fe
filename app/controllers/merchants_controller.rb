@@ -1,7 +1,5 @@
 class MerchantsController < ApplicationController
-  # before_action :set_merchant, only: %i[ show edit update destroy ]
 
-  # GET /merchants or /merchants.json
   def index
     connection = Faraday.new(url: "http://localhost:3000")
     response = connection.get("api/v1/merchants")
@@ -9,69 +7,18 @@ class MerchantsController < ApplicationController
     @merchants = parsed_response[:data]
   end
 
-  # GET /merchants/1 or /merchants/1.json
   def show
     connection = Faraday.new(url: "http://localhost:3000")
-    response = connection.get("api/v1/merchants")
+    response = connection.get("api/v1/merchants/#{params[:id]}")
     parsed_response = JSON.parse(response.body, symbolize_names: true)
-    @merchants = parsed_response[:data]
-    @merchant = @merchants.find {|merchant| merchant[:id] = params[:id]}
-  end
-
-  # GET /merchants/new
-  def new
-    @merchant = Merchant.new
-  end
-
-  # GET /merchants/1/edit
-  def edit
-  end
-
-  # POST /merchants or /merchants.json
-  def create
-    @merchant = Merchant.new(merchant_params)
-
-    respond_to do |format|
-      if @merchant.save
-        format.html { redirect_to @merchant, notice: "Merchant was successfully created." }
-        format.json { render :show, status: :created, location: @merchant }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @merchant.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /merchants/1 or /merchants/1.json
-  def update
-    respond_to do |format|
-      if @merchant.update(merchant_params)
-        format.html { redirect_to @merchant, notice: "Merchant was successfully updated." }
-        format.json { render :show, status: :ok, location: @merchant }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @merchant.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /merchants/1 or /merchants/1.json
-  def destroy
-    @merchant.destroy
-    respond_to do |format|
-      format.html { redirect_to merchants_url, notice: "Merchant was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    @merchant = parsed_response[:data]
+    items_response = connection.get("api/v1/merchants/#{params[:id]}/items")
+    parsed_items = JSON.parse(items_response.body, symbolize_names: true)
+    @items = parsed_items[:data]
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    # def set_merchant
-    #   @merchant = Merchant.find(params[:id])
-    # end
-
-    # Only allow a list of trusted parameters through.
     def merchant_params
-      params.require(:merchant).permit(:name)
+      params.require(:merchant).permit(:attributes, :name)
     end
 end

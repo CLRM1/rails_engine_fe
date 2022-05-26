@@ -2,9 +2,12 @@
 
 <p>
   <strong>Name:</strong>
-  <%= @merchant[:attributes][:name] %>
+  <%= @merchant[:attributes][:name]%>
   <br>
   <strong>Items:</strong>
+  <% @items.each do |item| %>
+    <p><%= item[:attributes][:name] %></p>
+  <% end %>
 </p>
 
 <%= link_to 'Edit', edit_merchant_path(@merchant) %> |
