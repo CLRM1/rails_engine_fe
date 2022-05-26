@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Merchants</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @merchants.each do |merchant| %>
+      <tr>
+        <td><%= merchant[:attributes][:name] %></td>
+        <td><%= link_to 'Show', "merchants/#{merchant[:id]}" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Merchant', new_merchant_path %>
