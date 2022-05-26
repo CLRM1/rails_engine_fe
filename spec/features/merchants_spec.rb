@@ -11,9 +11,6 @@ RSpec.describe 'Merchants page' do
   # And I should see a list of items that merchant sells.
   it "text" do
     visit '/merchants'
-    expect(page).to have_content('Merchants:')
-    within "#merchants-#{merchant.id}" do
-      expect(page).to have_content('Schroeder-Jerde')
-    end
+    expect(page).to have_content('Schroeder-Jerde')
   end
 end
